@@ -1,1 +1,1 @@
-# Depth_Estimation_Using_Monecular_Camera
+# Depth_Estimation_Using_Monocular_Camera
