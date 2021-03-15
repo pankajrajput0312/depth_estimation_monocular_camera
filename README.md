@@ -10,3 +10,16 @@ In our implementation, we firstly used our individual depth model which included
 (240 X 320) feature maps with the 1 channel of the output image because of the required output of the grayscale depth image.
 
 <img src = "/images/depth_model.png">
+
+Here there was the possibility of the information to be lost is enough so 4 upskip connections are added at the end of the final output, the inputs of our upskip connections were Output of ResNet Model, and all 4 UpConv layers, by using this we were able to remember our previously shared informations through our model layers. At the end of the model all the UpSkip connections were added, to do so the size of the feature maps extracted by skip connections were increased by using the resize and convolutional layers. 
+
+### Semantic Segmentation Model:
+
+<img src = "/images/semantic_model.png">
+In the case of semantic segmentation we used the identical model as used in our Depth Estimation model, but the end Activation layer of Sigmoid Activation was introduced, because it exists between (0 to 1)and therefore, it is especially used for models where we have to predict the probability as an output.  
+
+### Combined Depth Estimation Model:
+
+In case of this combined model, we made many transitions by adding the two individual models which helped in sharing the the information of the depth model and semantic model at two places, which helped depth model to distinguish the objects from each other, as the problem faced by using the individual depth estimation was that the objects placed at the same depth were unable to classify and were kind of merge with each other. 
+
+<img src = "/images/lsu_layer.png">
