@@ -23,3 +23,42 @@ In the case of semantic segmentation we used the identical model as used in our 
 In case of this combined model, we made many transitions by adding the two individual models which helped in sharing the the information of the depth model and semantic model at two places, which helped depth model to distinguish the objects from each other, as the problem faced by using the individual depth estimation was that the objects placed at the same depth were unable to classify and were kind of merge with each other. 
 
 <img src = "/images/lsu_layer.PNG">
+
+To reduce this problem, and to make our results better and efficient we introduced 2 knowledge sharing units which works as, they collect the feature map from the 2 corresponding layers of depth and semantic model which are having same dimensions, then they introduce the weights that are to be multiplied by the feature maps and are then added to each other as shown in the figure. 
+
+<img src = "/images/complete_model.png">
+
+From the figure 3.0 it can be seen that the knowledge of layers 1 of Conv2DTranspose layer of both depth and semantic model is shared to the 3rd layer of both semantic and depth models, similarly knowledge of the 2nd layer is shared with the 4th layer in the same ways. The input given to the 3rd and 4th layer is the addition of a lateral sharing unit and the 2nd and 3rd layer outputs respectively. The rest of the models and the layers from which the information is shared, remains same as that of implemented in the above given two models.
+
+## Losses
+In order to better illustrate the proposed losses, we visualize the learned attention of the network, i.e. which region the network focuses more on. Here we use the spatial attention map to show the attention maps of the network on monocular depth estimation as heat-map, where the darker portion indicates high values or closer objects in order to better illustrate the proposed losses, we visualize the learned attention of the network, i.e. which region the network focuses more on. Here we use the spatial attention map to show the attention maps of the network on monocular depth estimation as heat-map, where the darker portion indicates high values or closer objects.
+
+### 1.  Depth Aware loss
+We use depthaware loss term to supervise the depth prediction task, loss is usually used to minimize the pixel-wise distance between the predicted and ground truth depth maps based on the training data.
+
+<img src = "/images/Depth_aware_equation.PNG">
+
+Where αD is an attention term, equal to normalized ground truth value, λD is a regularization term which is used to avoid gradient vanishing at the beginning of training and learning of nearby objects. Its value is defined to be :
+
+<img src = "/images/lambda_d.png">
+
+Where di and diGT are predicted and ground truth values respectively(taken not to be normalised).
+
+### 2.  Semantic Focal Loss:
+We propose to guide the network to pay more attention to the hard tailed categories and set the loss term as : 
+
+<img src = "/images/semantic_focal_loss.png">
+
+Where LiGT is the normalised ground truth values, α and γ are the balancing weight and focusing parameter to modulate the loss attention, valued to be α∊[0, 1] and γ∊[1, 5] but the parameters satisfied according to our attention terms were, α = 0.25 and γ = 2. 
+
+<img src = "/images/semantic_focal_li.png">
+
+Si is normalized segmented predicted value.
+
+Li is valued as : 
+
+### 3. Joint Edge Loss:
+
+
+     
+
