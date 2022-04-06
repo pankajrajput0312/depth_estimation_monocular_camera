@@ -3,7 +3,7 @@
 """
 Created on Mon Mar  1 18:31:09 2021
 
-@author: anunay
+@author: anunay, pankaj
 """
 
 class DataGenerator(Sequence):
